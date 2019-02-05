@@ -12,11 +12,21 @@
 #define ENABLE_WEBSERVER
 #define ENABLE_RTSPSERVER
 
+// This board has slightly different GPIO bindings (and lots more RAM)
+// uncomment to use
+// #define USEBOARD_TTGO_T
+
 #ifdef ENABLE_OLED
 #include "SSD1306.h"
 #define OLED_ADDRESS 0x3c
+
+#ifdef USEBOARD_TTGO_T
+#define I2C_SDA 21
+#define I2C_SCL 22
+#else
 #define I2C_SDA 14
 #define I2C_SCL 13
+#endif
 SSD1306Wire display(OLED_ADDRESS, I2C_SDA, I2C_SCL, GEOMETRY_128_32);
 bool hasDisplay; // we probe for the device at runtime
 #endif
@@ -120,7 +130,11 @@ void setup()
     {
         ;
     }
+#ifdef USEBOARD_TTGO_T
+    cam.init(esp32cam_ttgo_t_config);
+#else
     cam.init(esp32cam_config);
+#endif
 
     IPAddress ip;
 

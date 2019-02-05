@@ -12,12 +12,25 @@ left over for other work.
 
 ![devboards](/docs/devpict.jpg "Typical ESP32-CAM boards")
 
+# Supported boards
+
+Virtually any OV2460 + ESP32 board should work.
+
+For boards other than this list you might (probably not) need to change esp32cam_config
+to use the GPIO assignments for your hardware.
+
+I've tested the following boards with the stock config: [ex1](https://www.banggood.com/Geekcreit-ESP32-CAM-WiFi-+-Bluetooth-Camera-Module-Development-Board-ESP32-With-Camera-Module-OV2640--p-1394679.html?rmmds=myorder&cur_warehouse=CN), [ex2](https://www.banggood.com/TTGO-T-Journal-ESP32-Camera-Development-Board-OV2640-SMA-WiFi-3dbi-Antenna-0_91-OLED-Camera-Board-p-1379925.html?rmmds=myorder&cur_warehouse=CN), [ex3](https://www.banggood.com/M5Stack-Official-ESP32-Camera-Module-Development-Board-OV2640-Camera-Type-C-Grove-Port-p-1333598.html?rmmds=myorder&cur_warehouse=CN).
+
+@drmocm contributed a config file for [this great board](https://www.aliexpress.com/item/TTGO-T-Camera-ESP32-WROVER-PSRAM-Camera-Module-ESP32-WROVER-B-OV2640-Camera-Module-0-96/32968683765.html).  It might be the current best choice because it
+has an extra 8MB of RAM which makes it possible to use very high resolutions on the camera.  
+You will need to #define USEBOARD_TTGO_T in ESP32-devcam.ino to get the proper bindings for this board.
+
 # How to buy/install/run
 
 This project uses the simple PlatformIO build system.  You can use the IDE, but for brevity
 in these instructions I describe use of their command line tool.
 
-1. Purchase one of the inexpensive ESP32-CAM modules from asia. [ex1](https://www.banggood.com/Geekcreit-ESP32-CAM-WiFi-+-Bluetooth-Camera-Module-Development-Board-ESP32-With-Camera-Module-OV2640--p-1394679.html?rmmds=myorder&cur_warehouse=CN), [ex2](https://www.banggood.com/TTGO-T-Journal-ESP32-Camera-Development-Board-OV2640-SMA-WiFi-3dbi-Antenna-0_91-OLED-Camera-Board-p-1379925.html?rmmds=myorder&cur_warehouse=CN), [ex3](https://www.banggood.com/M5Stack-Official-ESP32-Camera-Module-Development-Board-OV2640-Camera-Type-C-Grove-Port-p-1333598.html?rmmds=myorder&cur_warehouse=CN).
+1. Purchase one of the inexpensive ESP32-CAM modules from asia (see above).
 2. Install [PlatformIO](https://platformio.org/).
 3. Download this git repo and cd into it.
 4. cp src/wifikeys_template.h src/wifikeys.h - and then edit wifikeys.h with your network info.
