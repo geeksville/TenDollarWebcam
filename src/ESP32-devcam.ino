@@ -2,6 +2,7 @@
 #include <WiFi.h>
 #include <WebServer.h>
 #include <WiFiClient.h>
+#include <AutoWifi.h>
 
 #include "SimStreamer.h"
 #include "OV2640Streamer.h"
@@ -15,6 +16,14 @@
 // This board has slightly different GPIO bindings (and lots more RAM)
 // uncomment to use
 // #define USEBOARD_TTGO_T
+
+// #define USEBOARD_AITHINKER
+
+// If your board has a GPIO which is attached to a button, uncomment the following line
+// and adjust the GPIO number as needed.  If that button is held down during boot the device
+// will factory reset.
+#define FACTORYRESET_BUTTON 32
+
 
 #ifdef ENABLE_OLED
 #include "SSD1306.h"
@@ -45,7 +54,6 @@ WiFiServer rtspServer(8554);
 #ifdef SOFTAP_MODE
 IPAddress apIP = IPAddress(192, 168, 1, 1);
 #else
-#include "wifikeys.h"
 #endif
 
 #ifdef ENABLE_WEBSERVER
@@ -133,7 +141,11 @@ void setup()
 #ifdef USEBOARD_TTGO_T
     cam.init(esp32cam_ttgo_t_config);
 #else
+#ifdef USEBOARD_AITHINKER
+    cam.init(esp32cam_aithinker_config);
+#else
     cam.init(esp32cam_config);
+#endif
 #endif
 
     IPAddress ip;
@@ -160,9 +172,25 @@ void setup()
         ip = WiFi.softAPIP();
     }
 #else
-    lcdMessage(String("join ") + ssid);
+
     WiFi.mode(WIFI_STA);
-    WiFi.begin(ssid, password);
+
+
+    AutoWifi a;
+
+    #ifdef FACTORYRESET_BUTTON
+    pinMode(FACTORYRESET_BUTTON, INPUT);
+    if(!digitalRead(FACTORYRESET_BUTTON))     // 1 means not pressed
+        a.resetProvisioning();
+    #endif
+
+    if(!a.isProvisioned())
+        lcdMessage("Setup wifi!");
+    else
+        lcdMessage(String("join ") + a.getSSID());
+
+    a.startWifi();
+
     while (WiFi.status() != WL_CONNECTED)
     {
         delay(500);
@@ -170,7 +198,6 @@ void setup()
     }
     ip = WiFi.localIP();
     Serial.println(F("WiFi connected"));
-    Serial.println("");
     Serial.println(ip);
 #endif
 

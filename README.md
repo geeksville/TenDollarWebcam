@@ -33,8 +33,10 @@ in these instructions I describe use of their command line tool.
 1. Purchase one of the inexpensive ESP32-CAM modules from asia (see above).
 2. Install [PlatformIO](https://platformio.org/).
 3. Download this git repo and cd into it.
-4. cp src/wifikeys_template.h src/wifikeys.h - and then edit wifikeys.h with your network info.
-5. pio run -t upload (This command will fetch dependencies, build the project and install it on the board via USB)
+4. pio run -t upload (This command will fetch dependencies, build the project and install it on the board via USB)
+
+The first time you run your device you'll need to use an Android or iOS app to give it
+access to your wifi network.  See [instructions here](https://github.com/geeksville/AutoWifi/blob/master/README.md).
 
 At this point your device should be happily serving up frames.  Either via
 a web-browser at http://yourdeviceipaddr or more interestingly via a standard
@@ -46,3 +48,6 @@ as follows:
 ```
 vlc -v rtsp://yourdevipaddr:8554/mjpeg/1
 ```
+
+Note: an older version of these instructions/code had you manually place your
+wifi keys into the source code.  That code is now commented out, in favor of [AutoWifi](https://github.com/geeksville/AutoWifi).
