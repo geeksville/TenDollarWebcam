@@ -6,12 +6,9 @@
 
 #include "SimStreamer.h"
 #include "OV2640Streamer.h"
+#include "OV2640.h"
 #include "CRtspSession.h"
 
-#define ENABLE_OLED //if want use oled ,turn on thi macro
-// #define SOFTAP_MODE // If you want to run our own softap turn this on
-#define ENABLE_WEBSERVER
-#define ENABLE_RTSPSERVER
 
 // This board has slightly different GPIO bindings (and lots more RAM)
 // uncomment to use
@@ -19,11 +16,21 @@
 
 // #define USEBOARD_AITHINKER
 
+#ifndef USEBOARD_AITHINKER
+#define ENABLE_OLED //if want use oled ,turn on thi macro
+#endif
+
+// #define SOFTAP_MODE // If you want to run our own softap turn this on
+#define ENABLE_WEBSERVER
+#define ENABLE_RTSPSERVER
+
+
+#ifndef USEBOARD_AITHINKER
 // If your board has a GPIO which is attached to a button, uncomment the following line
 // and adjust the GPIO number as needed.  If that button is held down during boot the device
 // will factory reset.
 #define FACTORYRESET_BUTTON 32
-
+#endif
 
 #ifdef ENABLE_OLED
 #include "SSD1306.h"
@@ -138,15 +145,18 @@ void setup()
     {
         ;
     }
+
+    int camInit =
 #ifdef USEBOARD_TTGO_T
-    cam.init(esp32cam_ttgo_t_config);
+        cam.init(esp32cam_ttgo_t_config);
 #else
 #ifdef USEBOARD_AITHINKER
-    cam.init(esp32cam_aithinker_config);
+        cam.init(esp32cam_aithinker_config);
 #else
-    cam.init(esp32cam_config);
+        cam.init(esp32cam_config);
 #endif
 #endif
+    Serial.printf("Camera init returned %d\n", camInit);
 
     IPAddress ip;
 

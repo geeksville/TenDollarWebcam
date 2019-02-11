@@ -21,6 +21,15 @@ to use the GPIO assignments for your hardware.
 
 I've tested the following boards with the stock config: [ex1](https://www.banggood.com/Geekcreit-ESP32-CAM-WiFi-+-Bluetooth-Camera-Module-Development-Board-ESP32-With-Camera-Module-OV2640--p-1394679.html?rmmds=myorder&cur_warehouse=CN), [ex2](https://www.banggood.com/TTGO-T-Journal-ESP32-Camera-Development-Board-OV2640-SMA-WiFi-3dbi-Antenna-0_91-OLED-Camera-Board-p-1379925.html?rmmds=myorder&cur_warehouse=CN), [ex3](https://www.banggood.com/M5Stack-Official-ESP32-Camera-Module-Development-Board-OV2640-Camera-Type-C-Grove-Port-p-1333598.html?rmmds=myorder&cur_warehouse=CN).
 
+## ESP32-CAM board special handling needed
+
+This board is great in some ways: it has PSRAM (so can in theory capture might higher res images than SVGA) and it is cheap and tiny.  Two downsides:
+
+* It has no built in USB port, so to program you'll need to use a USB serial adapter.  See docs for a photo of the proper pins.
+* The GPIO assignments are different for the camera, so you'll need to define USEBOARD_AITHINKER
+
+## TTGO-T board special handling needed
+
 @drmocm contributed a config file for [this great board](https://www.aliexpress.com/item/TTGO-T-Camera-ESP32-WROVER-PSRAM-Camera-Module-ESP32-WROVER-B-OV2640-Camera-Module-0-96/32968683765.html).  It might be the current best choice because it
 has an extra 8MB of RAM which makes it possible to use very high resolutions on the camera.  
 You will need to #define USEBOARD_TTGO_T in ESP32-devcam.ino to get the proper bindings for this board.
